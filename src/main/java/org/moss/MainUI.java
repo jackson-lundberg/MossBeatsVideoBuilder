@@ -23,7 +23,7 @@ public class MainUI {
         // Initialize components
         audioFilePathField = new JTextField("Audio File",30);
         videoFilePathField = new JTextField("MP4 File",30);
-        imageFilePathField = new JTextField("JPG File",30);
+        //imageFilePathField = new JTextField("JPG File",30);
         processButton = new JButton("Process");
         outputTextArea = new JTextArea(15, 40);
         outputTextArea.setEditable(false);
@@ -53,7 +53,7 @@ public class MainUI {
         // Enable drag and drop for text fields
         new FileDrop(audioFilePathField);
         new FileDrop(videoFilePathField);
-        new FileDrop(imageFilePathField);
+       // new FileDrop(imageFilePathField);
 
         // Layout setup
         mainPanel.setLayout(new BorderLayout());
@@ -76,11 +76,11 @@ public class MainUI {
         gbc.gridx = 1;
         inputPanel.add(videoFilePathField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        inputPanel.add(new JLabel("Image File Path:"), gbc);
-        gbc.gridx = 1;
-        inputPanel.add(imageFilePathField, gbc);
+//        gbc.gridx = 0;
+//        gbc.gridy = 2;
+//        inputPanel.add(new JLabel("Image File Path:"), gbc);
+//        gbc.gridx = 1;
+//        inputPanel.add(imageFilePathField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -95,9 +95,9 @@ public class MainUI {
             public void actionPerformed(ActionEvent e) {
                 String audioFilePath = audioFilePathField.getText();
                 String videoFilePath = videoFilePathField.getText();
-                String imageFilePath = imageFilePathField.getText();
+                //String imageFilePath = imageFilePathField.getText();
 
-                if (audioFilePath.isEmpty() || (videoFilePath.isEmpty() && imageFilePath.isEmpty())) {
+                if (audioFilePath.isEmpty() || videoFilePath.isEmpty()) {
                     outputTextArea.append("Please provide both audio and video file paths.\n");
                     return;
                 }
@@ -114,11 +114,7 @@ public class MainUI {
                     long audioLength = AudioLength.getAudioLength(audioFilePath);
                     outputTextArea.append("Audio Length of " + audioFileName + ": " + audioLength + "\n");
                     System.out.println("we got here");
-                    if (!imageFilePath.isEmpty()){
-                        System.out.println(imageFilePath);
-                        ImageToMP4.createVideoFromImage(imageFilePath,tempVideoPath,audioLength);
-                    }
-                    else {
+
 
                         long videoLength = VideoLength.getVideoLength(videoFilePath);
                         outputTextArea.append("Video Length of: " + videoFilePath + ", length: " + videoLength + "\n");
@@ -128,7 +124,7 @@ public class MainUI {
 
                         VideoConcatenator.concatenateVideo(videoFilePath, loops, tempVideoPath);
                         outputTextArea.append("Video Created at " + tempVideoPath + "\n");
-                    }
+
                     AudioVideoMerger.mergeAudioVideo(audioFilePath, tempVideoPath, outputFilePath);
                     outputTextArea.append("File created successfully at " + outputFilePath + "\n");
 
